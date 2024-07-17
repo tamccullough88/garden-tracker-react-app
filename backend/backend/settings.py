@@ -82,9 +82,9 @@ DATABASES = {
         'NAME': 'your_db_name',
         'ENFORCE_SCHEMA': False,
         'CLIENT': {
-            'host': 'your_mongodb_atlas_connection_string',
-            'username': 'your_username',
-            'password': 'your_password',
+            'host': 'mongodb+srv://garden-tracker:password1234@garden-tracker.6nuw6ki.mongodb.net/?retryWrites=true&w=majority&appName=garden-tracker',
+            'username': 'garden-tracker',
+            'password': 'password1234',
         }
     }
 }
