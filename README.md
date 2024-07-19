@@ -28,19 +28,19 @@ The frontend is structured as a single-page application (SPA) using React. It in
    ```bash
    git clone https://github.com/tamccullough88/garden-tracker-react-app.git
    cd garden-tracker-react-app/frontend
-   '''
+   ```
 
 2. Install dependencies:
 
-  '''bash
+  ```bash
   npm install
-  '''
+  ```
 
   or
 
-  '''bash
+  ```bash
   yarn install
-  '''
+  ```
 
 The build artifacts will be stored in the build directory.
 
@@ -91,18 +91,18 @@ The backend exposes a set of RESTful APIs for the frontend to interact with. Pos
 
 1. Clone the repository:
 
-   `'''bash
+   ````bash
    git clone https://github.com/tamccullough88/garden-tracker-react-app.git
    cd garden-tracker-react-app/backend
-  '''
+  ```
 
 2. Create a virtual environment and activate it:
 
 
-  ''' bash
+  ``` bash
   python -m venv env
   source env/bin/activate
-  '''
+  ```
 
 3. Install dependencies:
 
@@ -117,16 +117,16 @@ The backend exposes a set of RESTful APIs for the frontend to interact with. Pos
 
 5. Apply database migrations:
 
-'''bash
+```bash
 python manage.py migrate
-'''
+```
 
 ### Running the Application
 To start the development server, run:
 
-'''bash
+```bash
 python manage.py runserver
-'''
+```
 The API will be available at http://localhost:8000.
 
 ### Contributing
