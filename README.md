@@ -53,8 +53,6 @@ Contributions are welcome! Please open an issue or submit a pull request for any
 This project is licensed under the MIT License.
 
 
-### Backend `README.md`
-
 
 # Garden Tracker Backend
 
@@ -67,7 +65,7 @@ This is the backend of the Garden Tracker application, built with Django. It pro
 - **Django**: A high-level Python web framework.
 - **Django REST Framework**: A powerful and flexible toolkit for building Web APIs.
 - **PostgreSQL**: A powerful, open-source object-relational database system.
-- **Gunicorn**: A Python WSGI HTTP Server for UNIX.
+- **Python**: The programming language used for writing Django applications.
 
 ## Architecture
 
@@ -91,13 +89,12 @@ The backend exposes a set of RESTful APIs for the frontend to interact with. Pos
 
 1. Clone the repository:
 
-   ````bash
-   git clone https://github.com/tamccullough88/garden-tracker-react-app.git
-   cd garden-tracker-react-app/backend
+  ``` bash
+  git clone https://github.com/tamccullough88/garden-tracker-react-app.git
+  cd garden-tracker-react-app/backend
   ```
 
 2. Create a virtual environment and activate it:
-
 
   ``` bash
   python -m venv env
@@ -106,9 +103,9 @@ The backend exposes a set of RESTful APIs for the frontend to interact with. Pos
 
 3. Install dependencies:
 
-  bash
-  Copy code
+  ``` bash
   pip install -r requirements.txt
+  ```
 
 4. Set up the PostgreSQL database:
 
@@ -117,16 +114,16 @@ The backend exposes a set of RESTful APIs for the frontend to interact with. Pos
 
 5. Apply database migrations:
 
-```bash
-python manage.py migrate
-```
+   ```bash
+   python manage.py migrate
+   ```
 
 ### Running the Application
 To start the development server, run:
 
-```bash
-python manage.py runserver
-```
+   ```bash
+   python manage.py runserver
+   ```
 The API will be available at http://localhost:8000.
 
 ### Contributing
