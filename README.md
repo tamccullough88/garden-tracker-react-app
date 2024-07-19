@@ -124,7 +124,7 @@ To start the development server, run:
    ```bash
    python manage.py runserver
    ```
-The API will be available at http://localhost:8000.
+The API will be available at http://localhost:8000/api.
 
 ### Contributing
 Contributions are welcome! Please open an issue or submit a pull request for any changes.
