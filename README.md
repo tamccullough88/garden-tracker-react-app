@@ -32,9 +32,9 @@ The frontend is structured as a single-page application (SPA) using React. It in
 
 2. Install dependencies:
 
-  ```bash
-  npm install
-  ```
+   ```bash
+   npm install
+   ```
 
   or
 
