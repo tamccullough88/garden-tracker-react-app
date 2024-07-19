@@ -1,24 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
-import mockGardens from '../mockData';
+// import mockGardens from '../mockData';
 
 const HomeScreen = () => {
     /* eslint-disable no-unused-vars */
     const [gardens, setGardens] = useState([]);
-    /* eslint-enable no-unused-vars */
+    const API_URL = process.env.REACT_APP_API_URL;
 
-    // Uncomment and adjust this for fetching real data
-    // useEffect(() => {
-    //   fetch('http://localhost:5000/api/gardens')
-    //     .then((response) => response.json())
-    //     .then((data) => setGardens(data))
-    //     .catch((error) => console.error('Error fetching gardens:', error));
-    // }, []);
+    //Uncomment and adjust this for fetching real data
+    useEffect(() => {
+        const fetchGardens = async () => {
+            try {
+                const response = await fetch(`${API_URL}gardens/`);
+                const data = await response.json();
+                setGardens(data);
+            } catch (error) {
+                console.error('Error fetching gardens:', error);
+            }
 
+        };
+        console.log(gardens)
+        fetchGardens();
+
+    }, [API_URL]);
+    console.log(gardens)
     const navigate = useNavigate(); // Use useNavigate instead of useHistory
 
-    const navigateToGarden = (gardenId) => {
-        navigate(`/garden/${gardenId}`);
+    const navigateToGarden = (id) => {
+        navigate(`/garden/${id}`);
     };
 
     const navigateToNewGarden = () => {
@@ -28,12 +37,12 @@ const HomeScreen = () => {
     return (
         <div style={styles.container}>
             <h1 style={styles.title}>My Gardens:</h1>
-            {mockGardens.map((garden) => (
+            {gardens.map((gardens) => (
                 <div
-                    key={garden.id}
-                    onClick={() => navigateToGarden(garden.gardenId)}
+                    key={gardens.id}
+                    onClick={() => navigateToGarden(gardens.id)}
                     style={styles.gardenContainer}>
-                    <button > <h2 style={styles.gardenName}>{garden.name}</h2></button>
+                    <button > <h2 style={styles.gardenName}>{gardens.name}</h2></button>
                 </div>
             ))}
             <button onClick={navigateToNewGarden}>Create Garden</button>

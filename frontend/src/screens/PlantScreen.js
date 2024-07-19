@@ -1,34 +1,36 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import mockGardens from '../mockData';
+import { useParams } from 'react-router-dom';
 
 const PlantScreen = () => {
-    const { gardenId, plantId } = useParams();
-    const navigate = useNavigate();
+    const { plantId } = useParams();
     const [plant, setPlant] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const API_URL = process.env.REACT_APP_API_URL;
 
     useEffect(() => {
-        console.log("Garden ID:", gardenId);
-        console.log("Plant ID:", plantId);
-
-        const garden = mockGardens.find(garden => garden.gardenId === parseInt(gardenId));
-        console.log("Garden:", garden);
-
-        if (garden) {
-            const foundPlant = garden.plants.find(plant => plant.plantId === parseInt(plantId));
-            console.log("Found Plant:", foundPlant);
-
-            if (foundPlant) {
-                setPlant(foundPlant);
-            } else {
-                console.log("No plant found with ID:", plantId);
+        const fetchPlantData = async () => {
+            try {
+                setLoading(true);
+                // Fetch plant details and comments
+                const response = await fetch(`${API_URL}plants/${plantId}/`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch plant details');
+                }
+                const plantData = await response.json();
+                setPlant(plantData);
+            } catch (error) {
+                setError(error.message);
+            } finally {
+                setLoading(false);
             }
-        } else {
-            console.log("No garden found with ID:", gardenId);
-        }
-    }, [gardenId, plantId]);
+        };
 
-    console.log("Plant:", plant);
+        fetchPlantData();
+    }, [API_URL, plantId]);
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error}</p>;
 
     return (
         <div style={styles.scrollViewContainer}>
@@ -37,8 +39,17 @@ const PlantScreen = () => {
                 {plant ? (
                     <div style={styles.plantDetail}>
                         <p>Name: {plant.name}</p>
-                        <p>Date Planted: {plant.datePlanted}</p>
-                        <p>Comments: {plant.comments}</p>
+                        <p>Date Planted: {new Date(plant.date_planted).toLocaleDateString()}</p>
+                        <p>Comments:</p>
+                        {plant.comments.length > 0 ? (
+                            <ul>
+                                {plant.comments.map((comment) => (
+                                    <li key={comment.id}>{comment.text} (Created at: {new Date(comment.created_at).toLocaleString()})</li>
+                                ))}
+                            </ul>
+                        ) : (
+                            <p>No comments available</p>
+                        )}
                     </div>
                 ) : (
                     <p>No plant found</p>

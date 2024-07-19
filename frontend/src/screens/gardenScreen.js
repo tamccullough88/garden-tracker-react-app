@@ -1,32 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import mockGardens from '../mockData';
+// import mockGardens from '../mockData';
 
 const GardenScreen = () => {
     const { gardenId } = useParams();
     const navigate = useNavigate();
     const [plants, setPlants] = useState([]);
+    const API_URL = process.env.REACT_APP_API_URL;
 
     const navigateToPlant = (plantId) => {
         navigate(`/plant/${plantId}`);
     };
 
     useEffect(() => {
-        const garden = mockGardens.find(garden => garden.gardenId === parseInt(gardenId));
-        if (garden) {
-            // Shift all xLocation and yLocation points down by 1
-            const shiftedPlants = garden.plants.map(plant => ({
-                ...plant,
-                xLocation: plant.xLocation - 1,
-                yLocation: plant.yLocation - 1,
-            }));
-            setPlants(shiftedPlants);
-        }
-    }, [gardenId]);
+        const fetchPlants = async () => {
+            try {
+                const response = await fetch(`${API_URL}plants/?garden=${gardenId}`);
+                const data = await response.json();
+                setPlants(data);
+            } catch (error) {
+                console.error('Error fetching plants:', error);
+            }
+        };
+
+        fetchPlants();
+    }, [gardenId, API_URL]);
 
     // Find the maximum x and y coordinates among all the plants
-    const maxX = plants.reduce((max, plant) => Math.max(max, plant.xLocation), 0);
-    const maxY = plants.reduce((max, plant) => Math.max(max, plant.yLocation), 0);
+    // const maxX = plants.reduce((max, plant) => Math.max(max, plant.xLocation), 0);
+    // const maxY = plants.reduce((max, plant) => Math.max(max, plant.yLocation), 0);
 
     return (
         <div style={styles.scrollViewContainer}>
@@ -42,10 +44,10 @@ const GardenScreen = () => {
                     {plants.map(plant => (
                         <div
                             key={plant.plantId}
-                            onClick={() => navigateToPlant(plant.plantId)}
+                            onClick={() => navigateToPlant(plant.id)}
                             style={styles.tableRow}>
                             <p style={styles.cellText}>{plant.name}</p>
-                            <p style={styles.cellText}>{plant.datePlanted}</p>
+                            <p style={styles.cellText}>{plant.date_planted}</p>
                         </div>
                     ))}
                 </div>

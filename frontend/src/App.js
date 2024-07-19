@@ -5,10 +5,12 @@ import GardenScreen from './screens/gardenScreen';
 import AddPlantScreen from './screens/AddPlantScreen';
 import NewGardenScreen from './screens/NewGardenScreen';
 import PlantScreen from './screens/PlantScreen';
+import Navbar from './components/navbar';
 
 const App = () => {
   return (
     <Router>
+      <Navbar />
       <Routes>
         <Route exact path="/" element={<HomeScreen />} />
         <Route path="/garden/:gardenId" element={<GardenScreen />} />
