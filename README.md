@@ -38,9 +38,9 @@ The frontend is structured as a single-page application (SPA) using React. It in
 
    or
 
-  ```bash
-  yarn install
-  ```
+   ```bash
+   yarn install
+   ```
 
 The build artifacts will be stored in the build directory.
 
