@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-i5r!v6xsoc@eb#fe1ku!8#*=7n1ivcv#4ai9ex=9f!c(qo2hx4'
+SECRET_KEY = 'django-insecure-6(f7e(1(bpd%$e4-a#10c@tb#v=6amiat*^%3!xj#@!jw#o^ep'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,9 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
     'api',
-    'djongo',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -78,16 +77,15 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'djongo',
-        'NAME': 'your_db_name',
-        'ENFORCE_SCHEMA': False,
-        'CLIENT': {
-            'host': 'mongodb+srv://garden-tracker:password1234@garden-tracker.6nuw6ki.mongodb.net/?retryWrites=true&w=majority&appName=garden-tracker',
-            'username': 'garden-tracker',
-            'password': 'password1234',
-        }
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'garden_tracker',
+        'USER': 'postgres',
+        'PASSWORD': 'password',
+        'HOST': 'localhost',  # Or your database host
+        'PORT': '5432',       # Or your database port
     }
 }
+
 
 
 # Password validation

@@ -1,21 +1,25 @@
+from datetime import timezone
 from django.db import models
-
-# Create your models here.
-from djongo import models
-
-class Plant(models.Model):
-    name = models.CharField(max_length=100)
-    date_planted = models.DateField()
-    comments = models.TextField(blank=True)
-    # x_location = models.IntegerField()
-    # y_location = models.IntegerField()
-
-    def __str__(self):
-        return self.name
 
 class Garden(models.Model):
     name = models.CharField(max_length=100)
-    plants = models.ArrayField(model_container=Plant)
+
 
     def __str__(self):
         return self.name
+
+class Plant(models.Model):
+    name = models.CharField(max_length=100)
+    date_planted = models.DateField()  # Date field for date planted
+    garden = models.ForeignKey(Garden, related_name='plants', on_delete=models.CASCADE)  # ForeignKey to Garden
+
+    def __str__(self):
+        return self.name
+
+class Comment(models.Model):
+    plant = models.ForeignKey(Plant, related_name='comments', on_delete=models.CASCADE)
+    text = models.TextField()
+    created_at = models.DateTimeField(timezone)
+
+    def __str__(self):
+        return self.text[:50]
