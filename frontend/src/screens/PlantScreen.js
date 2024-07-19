@@ -1,82 +1,80 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 const PlantScreen = () => {
     const { plantId } = useParams();
-    const [plant, setPlant] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const API_URL = process.env.REACT_APP_API_URL;
+    const [plant, setPlant] = useState({});
+    const [comments, setComments] = useState([]);
+    const [newComment, setNewComment] = useState('');
+    const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+
 
     useEffect(() => {
-        const fetchPlantData = async () => {
-            try {
-                setLoading(true);
-                // Fetch plant details and comments
-                const response = await fetch(`${API_URL}plants/${plantId}/`);
+        fetch(`http://localhost:8000/api/plants/${plantId}`)
+            .then(response => response.json())
+            .then(data => {
+                setPlant(data);
+                setComments(data.comments || []);
+            })
+            .catch(error => console.error('Error fetching plant:', error));
+    }, [plantId]);
+
+    const addComment = () => {
+        const formattedDate = new Date(date).toISOString().split('T')[0]; // Ensure date is correctly formatted
+
+        fetch('http://localhost:8000/api/comments/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                plant: plantId, // Use plantId instead of plant.name for the foreign key
+                text: newComment,
+                created_at: formattedDate
+            }),
+        })
+            .then(response => {
                 if (!response.ok) {
-                    throw new Error('Failed to fetch plant details');
+                    throw new Error('Network response was not ok');
                 }
-                const plantData = await response.json();
-                setPlant(plantData);
-            } catch (error) {
-                setError(error.message);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchPlantData();
-    }, [API_URL, plantId]);
-
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error}</p>;
+                return response.json();
+            })
+            .then(comment => {
+                setComments([...comments, comment]);
+                setNewComment('');
+            })
+            .catch(error => console.error('Error adding comment:', error));
+    };
 
     return (
-        <div style={styles.scrollViewContainer}>
-            <div style={styles.plantDetails}>
-                <p style={styles.plantDetailTitle}>Plant Details:</p>
-                {plant ? (
-                    <div style={styles.plantDetail}>
-                        <p>Name: {plant.name}</p>
-                        <p>Date Planted: {new Date(plant.date_planted).toLocaleDateString()}</p>
-                        <p>Comments:</p>
-                        {plant.comments.length > 0 ? (
-                            <ul>
-                                {plant.comments.map((comment) => (
-                                    <li key={comment.id}>{comment.text} (Created at: {new Date(comment.created_at).toLocaleString()})</li>
-                                ))}
-                            </ul>
-                        ) : (
-                            <p>No comments available</p>
-                        )}
-                    </div>
-                ) : (
-                    <p>No plant found</p>
-                )}
+        <div>
+            <h1>{plant.name}</h1>
+            <h2>Date Planted:</h2>
+            <h4>{plant.date_planted}</h4>
+
+            <h2>Comments</h2>
+            <ul>
+                {comments.map((comment, index) => (
+                    <li key={index}>{comment.text} on {comment.created_at}</li>
+                ))}
+            </ul>
+
+            <div>
+                <textarea
+                    placeholder="Add a comment"
+                    value={newComment}
+                    onChange={e => setNewComment(e.target.value)}
+                />
+                <input
+                    type="date"
+                    value={date}
+                    onChange={e => setDate(e.target.value)}
+                />
+                <button onClick={addComment}>Submit</button>
             </div>
         </div>
     );
-}
-
-const styles = {
-    scrollViewContainer: {
-        display: 'flex',
-        flexDirection: 'column',
-        flexGrow: 1,
-        padding: '10px'
-    },
-    plantDetails: {
-        border: '1px solid black',
-        padding: '10px'
-    },
-    plantDetailTitle: {
-        fontWeight: 'bold',
-        marginBottom: '10px'
-    },
-    plantDetail: {
-        marginBottom: '5px'
-    }
 };
 
 export default PlantScreen;
+

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-// import mockGardens from '../mockData';
+
 
 const GardenScreen = () => {
     const { gardenId } = useParams();
     const navigate = useNavigate();
     const [plants, setPlants] = useState([]);
+    const [gardenName, setGardenName] = useState([])
     const API_URL = process.env.REACT_APP_API_URL;
 
     const navigateToPlant = (plantId) => {
@@ -26,24 +27,33 @@ const GardenScreen = () => {
         fetchPlants();
     }, [gardenId, API_URL]);
 
-    // Find the maximum x and y coordinates among all the plants
-    // const maxX = plants.reduce((max, plant) => Math.max(max, plant.xLocation), 0);
-    // const maxY = plants.reduce((max, plant) => Math.max(max, plant.yLocation), 0);
+    useEffect(() => {
+        const fetchGarden = async () => {
+            try {
+                const response = await fetch(`${API_URL}gardens/${gardenId}`)
+                const data = await response.json();
+                setGardenName(data)
+            } catch (error) {
+                console.error('Error fetching plants:', error);
+            }
+        };
+        fetchGarden()
+
+    }, [gardenId, API_URL]);
 
     return (
         <div style={styles.scrollViewContainer}>
             <div style={styles.container}>
-                <p>Plants in Garden:</p>
+                <h1>Plants in {gardenName.name} Garden:</h1>
                 {/* Plants Section */}
                 <div style={styles.plantList}>
-                    <p style={styles.plantListTitle}>Plant Details:</p>
                     <div style={styles.tableHeader}>
                         <p style={styles.columnHeader}>Plant Name</p>
                         <p style={styles.columnHeader}>Date Planted</p>
                     </div>
                     {plants.map(plant => (
                         <div
-                            key={plant.plantId}
+                            key={plant.id}
                             onClick={() => navigateToPlant(plant.id)}
                             style={styles.tableRow}>
                             <p style={styles.cellText}>{plant.name}</p>

@@ -6,10 +6,10 @@ const AddPlantScreen = () => {
     const navigate = useNavigate();
     const [plantName, setPlantName] = useState('');
     const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
-    const [comments, setComments] = useState('');
+
 
     const addPlant = () => {
-        fetch(`http://localhost:5000/api/plants/${gardenId}`, {
+        fetch('http://localhost:8000/api/plants/', {  // Use the base URL for adding plants
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -17,7 +17,8 @@ const AddPlantScreen = () => {
             body: JSON.stringify({
                 name: plantName,
                 date_planted: date,
-                comments: comments,
+                garden: gardenId,  // Include gardenId in the request body
+
             }),
         })
             .then(response => response.json())
@@ -35,6 +36,7 @@ const AddPlantScreen = () => {
                     onChange={(e) => setPlantName(e.target.value)}
                     style={styles.input}
                     placeholder='Plant Name'
+
                 />
             </label>
             <label>
@@ -44,15 +46,6 @@ const AddPlantScreen = () => {
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
                     style={styles.input}
-                />
-            </label>
-            <label>
-                Comments:
-                <textarea
-                    value={comments}
-                    onChange={(e) => setComments(e.target.value)}
-                    style={styles.textarea}
-                    placeholder='Comments'
                 />
             </label>
             <button onClick={addPlant} style={styles.button}>Add Plant</button>

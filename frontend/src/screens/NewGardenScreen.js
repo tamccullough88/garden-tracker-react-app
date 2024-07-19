@@ -6,7 +6,7 @@ const NewGardenScreen = () => {
     const navigate = useNavigate();
 
     const createGarden = () => {
-        fetch('http://localhost:5000/api/gardens', {
+        fetch('http://localhost:8000/api/gardens/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
