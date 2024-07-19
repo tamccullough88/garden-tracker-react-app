@@ -36,7 +36,7 @@ The frontend is structured as a single-page application (SPA) using React. It in
    npm install
    ```
 
-  or
+   or
 
   ```bash
   yarn install
