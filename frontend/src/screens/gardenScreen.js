@@ -6,7 +6,7 @@ const GardenScreen = () => {
     const { gardenId } = useParams();
     const navigate = useNavigate();
     const [plants, setPlants] = useState([]);
-    const [gardenName, setGardenName] = useState([])
+    const [gardenName, setGardenName] = useState('')
     const API_URL = process.env.REACT_APP_API_URL;
 
     const navigateToPlant = (plantId) => {
@@ -16,9 +16,9 @@ const GardenScreen = () => {
     useEffect(() => {
         const fetchPlants = async () => {
             try {
-                const response = await fetch(`${API_URL}plants/?garden=${gardenId}`);
+                const response = await fetch(`${API_URL}gardens/${gardenId}`);
                 const data = await response.json();
-                setPlants(data);
+                setPlants(data.plants);
             } catch (error) {
                 console.error('Error fetching plants:', error);
             }
@@ -26,6 +26,8 @@ const GardenScreen = () => {
 
         fetchPlants();
     }, [gardenId, API_URL]);
+
+    console.log(plants)
 
     useEffect(() => {
         const fetchGarden = async () => {
@@ -42,7 +44,7 @@ const GardenScreen = () => {
     }, [gardenId, API_URL]);
 
     return (
-        <div style={styles.scrollViewContainer}>
+        <div >
             <div style={styles.container}>
                 <h1>Plants in {gardenName.name} Garden:</h1>
                 {/* Plants Section */}
@@ -68,10 +70,7 @@ const GardenScreen = () => {
 };
 
 const styles = {
-    scrollViewContainer: {
-        display: 'flex',
-        flexDirection: 'column',
-    },
+
     container: {
         padding: '20px',
         alignItems: 'center',

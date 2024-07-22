@@ -30,7 +30,7 @@ const Navbar = () => {
                         <ul style={styles.dropdown}>
                             {gardens.map(garden => (
                                 <li key={garden.id} style={styles.dropdownItem}>
-                                    <Link to={`/gardens/${garden.id}`} style={styles.navLink}>{garden.name}</Link>
+                                    <Link to={`/garden/${garden.id}`} style={styles.navLink}>{garden.name}</Link>
                                 </li>
                             ))}
                         </ul>
